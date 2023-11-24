@@ -15,7 +15,7 @@
                     {!! $tab['layout']->build() !!}
                 @else
                     @if($tabObj->hasRows)
-                    <div class="ml-2 mb-2" style="margin-top: -1rem">
+                    <div class="ml-2 mb-2 mr-2" style="margin-top: -1rem">
                         @foreach($tab['fields'] as $field)
                             {!! $field->render() !!}
                         @endforeach
