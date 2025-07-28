@@ -57,6 +57,9 @@ class Asset
         '@layer' => [
             'js' => '@admin/dcat/plugins/layer/layer.js',
         ],
+        '@preview-image' => [
+            'js' => '@admin/dcat/plugins/preview-image/preview-image.js',
+        ],
         '@tinymce' => [
             'js' => '@admin/dcat/plugins/tinymce/tinymce.min.js',
         ],
@@ -244,12 +247,13 @@ class Asset
      * @var array
      */
     public $baseJs = [
-        'adminlte'  => '@adminlte',
-        'toastr'    => '@toastr',
-        'pjax'      => '@pjax',
-        'validator' => '@validator',
-        'layer'     => '@layer',
-        'init'      => '@jquery.initialize',
+        'adminlte'      => '@adminlte',
+        'toastr'        => '@toastr',
+        'pjax'          => '@pjax',
+        'validator'     => '@validator',
+        'layer'         => '@layer',
+        'preview-image' => '@preview-image',
+        'init'          => '@jquery.initialize',
     ];
 
     /**

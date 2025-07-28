@@ -314,7 +314,6 @@ class Modal extends Widget
         if (! $this->events) {
             return;
         }
-
         $script = '';
 
         foreach ($this->events as $v) {
@@ -340,7 +339,7 @@ JS;
 
         $this->on('show.bs.modal', <<<JS
 body.html('<div style="min-height:150px"></div>').loading();
-        
+
 setTimeout(function () {
     target.trigger('{$this->target}:load')
 }, {$this->delay});

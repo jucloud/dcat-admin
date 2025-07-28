@@ -13,9 +13,14 @@ use Illuminate\Support\Str;
 
 class Slider extends Widget
 {
-    use InteractsWithRenderApi;
+    // use InteractsWithRenderApi;
 
-    protected $target = 'slide';
+    protected $view = 'admin::widgets.slider-table';
+
+    /**
+     * @var string|Closure|Renderable
+     */
+    protected $id;
 
     /**
      * @var string|Closure|Renderable
@@ -51,10 +56,11 @@ class Slider extends Widget
      * @var string
      */
     protected $scrollable = '';
+
     /**
      * @var array
      */
-    protected $events = [];
+    protected $events = ['shown' => null, 'hidden' => null, 'toggle' => null, 'destroy' => null, 'load' => null];
 
     /**
      * @var int
@@ -72,38 +78,15 @@ class Slider extends Widget
      * @param  string|Closure|Renderable  $title
      * @param  string|Closure|Renderable|LazyRenderable  $content
      */
-    public function __construct($title = null, $content = null)
+    public function __construct($title = null, LazyRenderable $content = null)
     {
-        $this->id('modal-'.Str::random(10));
+        $this->id('slider-' . Str::random(10));
         $this->title($title);
         $this->content($content);
 
-        $this->class('modal fade');
-    }
+        $this->elementClass = 'slider-container';
 
-    /**
-     * 设置弹窗垂直居中.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function centered(bool $value = true)
-    {
-        $this->centered = $value ? 'modal-dialog-centered' : '';
-
-        return $this;
-    }
-
-    /**
-     * 设置弹窗内容滚动.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function scrollable(bool $value = true)
-    {
-        $this->scrollable = $value ? 'modal-dialog-scrollable' : '';
-        return $this;
+        $this->class('slider-content');
     }
 
     /**
@@ -148,16 +131,20 @@ class Slider extends Widget
      * @param  string|Closure|Renderable|LazyRenderable  $content
      * @return $this
      */
-    public function content($content)
+    public function content(?LazyRenderable $content)
     {
+        if (! $content) {
+            return $this;
+        }
+
         if ($content instanceof LazyGrid) {
-            $content = $table =
-                LazyTable::make()
+
+            $this->content = LazyTable::make()
                 ->from($content)
                 ->simple()
                 ->load(false);
 
-            $this->onShow("target.find('{$table->getElementSelector()}').trigger('table:load')");
+            $this->onShown("target.find('{$table->getElementSelector()}').trigger('table:load')");
         }
 
         if ($content instanceof LazyRenderable) {
@@ -167,15 +154,6 @@ class Slider extends Widget
         }
 
         return $this;
-    }
-
-    /**
-     * @param  string|Closure|Renderable|LazyRenderable  $content
-     * @return $this
-     */
-    public function body($content)
-    {
-        return $this->content($content);
     }
 
     /**
@@ -203,39 +181,16 @@ class Slider extends Widget
     }
 
     /**
-     * 监听弹窗事件.
-     *
-     * @param  string  $event
-     * @param  string  $script
-     * @return $this
-     */
-    public function on(string $event, string $script)
-    {
-        $this->events[] = compact('event', 'script');
-
-        return $this;
-    }
-
-    /**
-     * 监听弹窗显示事件.
-     *
-     * @param  string  $script
-     * @return $this
-     */
-    public function onShow(string $script)
-    {
-        return $this->on('show.bs.modal', $script);
-    }
-
-    /**
-     * 监听弹窗已显示事件.
+     * 监听弹窗打开事件.
      *
      * @param  string  $script
      * @return $this
      */
     public function onShown(string $script)
     {
-        return $this->on('shown.bs.modal', $script);
+        $this->events['open'] .= ';'.$script;
+
+        return $this;
     }
 
     /**
@@ -244,59 +199,50 @@ class Slider extends Widget
      * @param  string  $script
      * @return $this
      */
-    public function onHide(string $script)
+    public function onHidden(string $script)
     {
-        return $this->on('hide.bs.modal', $script);
+        $this->events['close'] .= ';'.$script;
+
+        return $this;
     }
 
     /**
-     * 监听弹窗已隐藏事件.
+     * 监听弹窗隐藏事件.
      *
      * @param  string  $script
      * @return $this
      */
-    public function onHidden(string $script)
+    public function onToggle(string $script)
     {
-        return $this->on('hidden.bs.modal', $script);
+        $this->events['toggle'] .= ';'.$script;
+
+        return $this;
     }
 
-    protected function addScript()
+    /**
+     * 监听弹窗隐藏事件.
+     *
+     * @param  string  $script
+     * @return $this
+     */
+    public function onDestroy(string $script)
     {
-        if (! $this->events) {
-            return;
-        }
+        $this->events['destroy'] .= ';'.$script;
 
-        $script = '';
-
-        foreach ($this->events as $v) {
-            $script .= "target.on('{$v['event']}', function (event) {
-                {$v['script']}
-            });";
-        }
-
-        $this->script = <<<JS
-(function () {
-    var target = $('#{$this->id()}'), body = target.find('.modal-body');
-    {$this->getRenderableScript()}
-    {$script}
-})();
-JS;
+        return $this;
     }
 
-    protected function addLoadRenderableScript()
+    /**
+     * 监听表格加载完毕事件.
+     *
+     * @param  string  $script
+     * @return $this
+     */
+    public function onLoad(string $script)
     {
-        if (! $this->getRenderable()) {
-            return;
-        }
+        $this->events['load'] .= ';'.$script;
 
-        $this->on('show.bs.modal', <<<JS
-body.html('<div style="min-height:150px"></div>').loading();
-
-setTimeout(function () {
-    target.trigger('{$this->target}:load')
-}, {$this->delay});
-JS
-        );
+        return $this;
     }
 
     /**
@@ -304,34 +250,16 @@ JS
      */
     public function render()
     {
-        $this->addLoadRenderableScript();
-        $this->addScript();
+        $this->addVariables([
+            'id'        => $this->id(),
+            'title'     => $this->title,
+            'button'    => $this->renderButton(),
+            'content'   => $this->content,
+            'footer'    => $this->renderFooter(),
+            'events'    => $this->events,
+        ]);
 
-        if ($this->join) {
-            return $this->renderButton().parent::render();
-        }
-
-        Admin::html(parent::render());
-
-        return $this->renderButton();
-    }
-
-    public function html()
-    {
-        return <<<HTML
-<div {$this->formatHtmlAttributes()}>
-    <div class="modal-dialog {$this->centered} {$this->scrollable} modal-{$this->size} slide-detail-container">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{$this->renderTitle()}</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">{$this->renderContent()}</div>
-            {$this->renderFooter()}
-        </div>
-    </div>
-</div>
-HTML;
+        return parent::render();
     }
 
     protected function renderTitle()
@@ -341,7 +269,8 @@ HTML;
 
     protected function renderContent()
     {
-        return Helper::render($this->content);
+        return $this->content->render();
+        // return Helper::render($this->content);
     }
 
     protected function renderFooter()
@@ -353,9 +282,10 @@ HTML;
         }
 
         return <<<HTML
-<div class="modal-footer">{$footer}</div>
+<div class="slider-footer">{$footer}</div>
 HTML;
     }
+
 
     protected function renderButton()
     {
@@ -370,8 +300,6 @@ HTML;
             $button = "<a href=\"javascript:void(0)\">{$button}</a>";
         }
 
-        return <<<HTML
-<span style="cursor: pointer" data-toggle="modal" data-target="#{$this->id()}">{$button}</span>
-HTML;
+        return $button;
     }
 }

@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Storage;
 
 class Image extends AbstractDisplayer
 {
-    public function display($server = '', $width = 200, $height = 200)
+    public function display($server = '', $size = 200, $data = [])
     {
         if ($this->value instanceof Arrayable) {
             $this->value = $this->value->toArray();
         }
 
-        return collect((array) $this->value)->filter()->map(function ($path) use ($server, $width, $height) {
+        $data = collect($data)->put('key', $this->getKey());
+
+        return collect((array) $this->value)->filter()->map(function ($path, $index) use ($server, $size, $data) {
             if (url()->isValidUrl($path) || mb_strpos($path, 'data:image') === 0) {
                 $src = $path;
             } elseif ($server) {
@@ -22,7 +24,9 @@ class Image extends AbstractDisplayer
                 $src = Storage::disk(config('admin.upload.disk'))->url($path);
             }
 
-            return "<img data-action='preview-img' src='$src' style='max-width:{$width}px;max-height:{$height}px;cursor:pointer' class='img img-thumbnail' />";
+            $data->put('index', $index);
+
+            return "<img data-action='preview-img' src='$src' style='max-width:{$size}px;max-height:{$size}px;' class='img img-thumbnail' data-info='{$data->sort()->toJson()}' />";
         })->implode('&nbsp;');
     }
 }
