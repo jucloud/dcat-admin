@@ -72,7 +72,7 @@ class Admin
      */
     public static function longVersion()
     {
-        return sprintf('Dcat Admin <comment>version</comment> <info>%s</info>', static::VERSION);
+        return sprintf('联影医信通 <comment>version</comment> <info>%s</info>', static::VERSION);
     }
 
     /**
