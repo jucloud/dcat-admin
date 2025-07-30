@@ -194,7 +194,58 @@ export default class Helpers {
     }
 
     // 预览图片
-    previewImage(src, width, title) {
+    preview(_this) {
+
+        let images = [], infos = [], imageIndex = 0;
+
+        if (typeof _this === 'string' || Object.prototype.toString.call(_this) === '[object String]') {
+            images = [_this];
+            infos.push(_this.data('info'));
+        } else {
+            _this.parent().find("img").each(function (index, image) {
+                if($(image).attr('src') == _this.attr('src')) {
+                    imageIndex = index;
+                }
+                images.push($(image).attr('src'));
+                infos.push($(image).data('info'));
+            });
+        }
+
+        let isDownload = (_this.parent().data('url') ? true : false);
+
+        previewImage({
+            index: imageIndex,
+            images: images, // 该属性是必填项，其他属性都是非必填。images表示图片地址数组, 也可以是一个object[], object格式为{url: '', name: '', type: '', id: ''}
+            fileType: 'image', // 文件类型，默认为image，可选项为image, auto。image表示将所有文件都显示为图片；auto表示自动判断文件类型，图片用img标签展示，其他类型文件只展示图标和名称，图标类型有audio、video、word、ppt、excel、pdf、other
+            loop: true, // 是否循环，默认为true
+            thumbnail: true, // 是否显示缩略图预览，默认为true
+            thumbnailDraggable: true, // 是否允许拖拽缩以更改略图位置，默认为true
+            toolbar: true, // 是否显示工具栏，包括放大缩小、旋转、适应窗口、实际尺寸、删除、下载，默认为true
+            onClose: function () { // 关闭回调，默认为空，可以在此处做一些清理工作，比如在移动端解除对返回键的拦截
+                console.log('关闭')
+            },
+            clickableFileTypes: ['pdf'], // 点击非图片格式文件时，只允许点击这些文件类型，会设置hover样式，当onFileClick不为空时生效，默认为all，即所有类型都可以点击
+            buttonTooltip: true, // 是否显示按钮提示，默认为true，若设为false，则不会显示按钮提示
+            download: isDownload, // 是否显示下载按钮，默认为false, 当toolbar为true时生效
+            onDownload: function (index, image, id, item, rotate) { // 下载回调，不传的话会用内置的下载方法来下载图片到本地
+
+                Dcat.loading();
+
+                let separator = _this.parent().data('url').indexOf('?') !== -1 ? "&" : "?";
+                let params = $.extend(infos[index], {'rotate': rotate});
+
+                $.ajax({
+                    method: 'GET',
+                    url: _this.parent().data('url') + separator + $.param(params),
+                }).then(function(data) {
+                    Dcat.loading(false);
+                });
+            },
+        });
+    }
+
+    // 预览图片
+    previewImage_back(src, width, title) {
         let Dcat = this.dcat,
             img = new Image(),
             win = this.isset(window.top) ? top : window,
