@@ -160,7 +160,7 @@ JS;
         ]);
 
         return <<<HTML
-<div {$this->formatHtmlAttributes()} style="min-height: 200px"></div>        
+<div {$this->formatHtmlAttributes()} style="min-height: 120px"></div>        
 HTML;
     }
 }

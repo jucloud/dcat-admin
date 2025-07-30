@@ -116,7 +116,7 @@ const Layout = (($) => {
             className       : this._config.scrollbarTheme,
             sizeAutoCapable : true,
             scrollbars : {
-              autoHide: this._config.scrollbarAutoHide, 
+              autoHide: this._config.scrollbarAutoHide,
               clickScrolling : true
             }
           })
@@ -142,9 +142,9 @@ const Layout = (($) => {
       // Activate layout height watcher
       this.fixLayoutHeight()
 
-      if (this._config.loginRegisterAutoHeight === true) {      
+      if (this._config.loginRegisterAutoHeight === true) {
         this.fixLoginRegisterHeight()
-      } else if (Number.isInteger(this._config.loginRegisterAutoHeight)) {      
+      } else if (Number.isInteger(this._config.loginRegisterAutoHeight)) {
         setInterval(this.fixLoginRegisterHeight, this._config.loginRegisterAutoHeight);
       }
 
