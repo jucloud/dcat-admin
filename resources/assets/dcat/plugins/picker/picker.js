@@ -71,28 +71,8 @@
 
             let pickerContainer = $("<span class='form-control city-picker-span'></span>").css({
                 'width': this.getWidth(position.width) + 'px',
-                'height': position.height + 'px',
-                'line-height': (position.height - 1) + 'px',
+                'height': ($(this).prevAll().first().height - 1) + 'px',
             });
-
-            let dropdownContainer = $("<div class='city-picker-dropdown'></div>").css({
-                'width': this.getWidth(position.width) + 'px',
-                'left': '40px',
-                'top': '100%'
-            });
-
-            let dropdown = '<div class="city-picker-dropdown" style="left:0px;top:100%;' +
-                    this.getWidthStyle(position.width, true) + '">' +
-                    '<div class="city-select-wrap">' +
-                    '<div class="city-select-tab">' +
-                    '<a class="active" data-count="province">省份</a>' +
-                    (this.includeDem('city') ? '<a data-count="city">城市</a>' : '') +
-                    (this.includeDem('district') ? '<a data-count="district">区县</a>' : '') + '</div>' +
-                    '<div class="city-select-content">' +
-                    '<div class="city-select province" data-count="province"></div>' +
-                    (this.includeDem('city') ? '<div class="city-select city" data-count="city"></div>' : '') +
-                    (this.includeDem('district') ? '<div class="city-select district" data-count="district"></div>' : '') +
-                    '</div></div>';
 
             if(placeholder) {
                 pickerContainer.append($("<span class='placeholder'></span>").insertBefore(placeholder));
@@ -100,12 +80,48 @@
 
             pickerContainer.append($("<span class='title'></span>")).append($("<span class='arrow'></span>"));
 
+            let dropdownContainer = $("<div class='city-picker-dropdown'></div>").css({
+                'width': this.getWidth(position.width) + 'px',
+                'left': '0px',
+                'top': '100%'
+            });
+
+            /**** 定义 selectWrap ****/
+            let selectWrap = $("<div class='city-select-wrap'></div>");
+
+            /**** 设置 citySelectTab ****/
+            let selectTab = $("<div class='city-select-tab'></div>");
+
+            selectTab.append($("<a class='active' data-count='province'>省份</a>"));
+
+            if(this.includeDem('city')) {
+                selectTab.append($("<a data-count='city'>城市</a>"));
+            }
+
+            if(this.includeDem('district')) {
+                selectTab.append($("<a data-count='district'>区县</a>"));
+            }
+
+            /**** 设置 selectContent ****/
+            let selectContent = $("<div class='city-select-content'></div>");
+
+            selectContent.append($("<div class='city-select province' data-count='province'></div>"));
+
+            if(this.includeDem('city')) {
+                selectContent.append($("<div class='city-select city' data-count='city'></div>"));
+            }
+
+            if(this.includeDem('district')) {
+                selectContent.append($("<div class='city-select district' data-count='district'></div>"));
+            }
+
+            selectWrap.append(selectTab).append(selectContent).appendTo(dropdownContainer);
+
             this.$element.addClass('city-picker-input');
 
-            this.$textspan = pickerContainer.insertBefore(this.$element);
-
-            // this.$textspan = $(textspan).insertBefore(this.$element);
-            this.$dropdown = $(dropdown).insertAfter(this.$textspan);
+            // this.$textspan = pickerContainer.insertBefore(this.$element);
+            this.$textspan = pickerContainer.insertAfter(this.$element);
+            this.$dropdown = dropdownContainer.insertBefore(this.$textspan);
 
             let $select = this.$dropdown.find('.city-select');
 

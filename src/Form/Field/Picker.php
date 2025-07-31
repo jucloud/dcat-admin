@@ -58,7 +58,7 @@ class Picker extends Text
             ->defaultAttribute('type', 'text')
             ->defaultAttribute('name', $this->getElementName())
             ->defaultAttribute('value', $this->value())
-            ->defaultAttribute('class', 'form-control '.$this->getElementClassString())
+            ->defaultAttribute('class', 'hidden '.$this->getElementClassString())
             ->defaultAttribute('data-toggle', 'city-picker')
             ->defaultAttribute('placeholder', $this->placeholder())
             ->defaultAttribute('readonly', 'readonly');
