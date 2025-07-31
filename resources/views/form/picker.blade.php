@@ -21,5 +21,5 @@
 </div>
 
 <script require="@number-input" init="{!! $selector !!}">
-    $this.citypicker({!! admin_javascript_json($options) !!});
+    $("#{{ $id }}").citypicker({!! $options !!});
 </script>

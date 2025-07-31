@@ -13,6 +13,7 @@
     color: #ccc;
     cursor: pointer;
     min-height: 34px;
+    line-height: 18px;
 }
 
 .city-picker-span > .placeholder {
@@ -22,7 +23,7 @@
 .city-picker-span > .arrow {
     position: absolute;
     top: 50%;
-    right: 8px;
+    right: 10px;
     width: 10px;
     margin-top: -3px;
     height: 5px;
@@ -31,7 +32,7 @@
 
 .city-picker-span.focus,
 .city-picker-span.open {
-    border-bottom-color: #586cb1;
+    /* border-bottom-color: #586cb1; */
 }
 
 .city-picker-span.open > .arrow {
@@ -42,6 +43,7 @@
     color: #333;
     padding: 5px;
     border-radius: 3px;
+    line-height: 18px !important;
 }
 
 .city-picker-span > .title > span:hover {

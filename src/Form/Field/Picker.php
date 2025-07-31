@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 class Picker extends Text
 {
+    use CanLoadFields;
+
     protected $view = 'admin::form.picker';
 
     protected $options = [
@@ -29,26 +31,10 @@ class Picker extends Text
         '@admin/dcat/plugins/picker/css/picker.css'
     ];
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function prepareInputValue($value)
-    {
-        return empty($value) ? 0 : $value;
-    }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function value($value = null)
-    {
-        if (is_null($value)) {
-            return (int) parent::value();
-        }
-
-        return parent::value($value);
-    }
-
     public function render()
     {
 
@@ -57,15 +43,18 @@ class Picker extends Text
         $this->defaultAttribute('id', $pickerId)
             ->defaultAttribute('type', 'text')
             ->defaultAttribute('name', $this->getElementName())
-            ->defaultAttribute('value', $this->value())
-            ->defaultAttribute('class', 'hidden '.$this->getElementClassString())
+            ->defaultAttribute('value', collect($this->options)->implode('/'))
+            ->defaultAttribute('class', ' '.$this->getElementClassString())
             ->defaultAttribute('data-toggle', 'city-picker')
             ->defaultAttribute('placeholder', $this->placeholder())
             ->defaultAttribute('readonly', 'readonly');
 
         $this->prepend("<i class='feather icon-globe'></i>");
-        // $this->append("<span class='btn btn-primary btn-{$pickerId} shadow-0'><i class='feather icon-chevron-down'></i></span>");
 
+        $this->addVariables([
+            'id'            => $pickerId,
+            'options'       => json_encode(collect($this->options), JSON_UNESCAPED_UNICODE)
+        ]);
         return parent::render();
     }
 }
