@@ -4,7 +4,7 @@ namespace Dcat\Admin\Grid\Displayers;
 
 use Dcat\Admin\Grid\Displayers\AbstractDisplayer;
 
-class Distpicker extends AbstractDisplayer
+class Picker extends AbstractDisplayer
 {
     public function display()
     {

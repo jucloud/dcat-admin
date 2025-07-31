@@ -51,7 +51,7 @@ use Illuminate\Support\Traits\Macroable;
  * @method $this studly()
  * @method $this substr($start, $length = null)
  * @method $this ucfirst()
- * @method $this distpicker()
+ * @method $this picker()
  *
  * @mixin Collection
  */
@@ -90,7 +90,7 @@ class Column
         'showTreeInDialog' => Displayers\DialogTree::class,
         'qrcode'           => Displayers\QRCode::class,
         'downloadable'     => Displayers\Downloadable::class,
-        'distpicker'       => Displayers\Distpicker::class,
+        'picker'           => Displayers\Picker::class,
         'copyable'         => Displayers\Copyable::class,
         'orderable'        => Displayers\Orderable::class,
         'limit'            => Displayers\Limit::class,

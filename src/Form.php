@@ -88,7 +88,6 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\MultipleSelectTable multipleSelectTable($column, $label = '')
  * @method Field\Button button(string $html = null)
  * @method Field\Autocomplete autocomplete($column, $label = '')
- * @method Field\Distpicker distpicker($column, $label = '')
  * @method Field\picker picker($column, $label = '')
  */
 class Form implements Renderable
