@@ -89,6 +89,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Field\Button button(string $html = null)
  * @method Field\Autocomplete autocomplete($column, $label = '')
  * @method Field\Distpicker distpicker($column, $label = '')
+ * @method Field\picker picker($column, $label = '')
  */
 class Form implements Renderable
 {
@@ -174,7 +175,7 @@ class Form implements Renderable
         'multipleSelectTable' => Field\MultipleSelectTable::class,
         'autocomplete'        => Field\Autocomplete::class,
         'distpicker'          => Field\Distpicker::class,
-
+        'picker'              => Field\picker::class,
     ];
 
     /**
