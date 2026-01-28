@@ -4,6 +4,7 @@ namespace Dcat\Admin\Grid;
 
 abstract class BatchAction extends GridAction
 {
+    public $selectorPrefix;
     /**
      * {@inheritdoc}
      */

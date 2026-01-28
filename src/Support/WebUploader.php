@@ -19,12 +19,15 @@ class WebUploader
 {
     const FILE_NAME = '_file_';
 
-    public $temporaryDirectory = 'tmp';
-
-    protected $temporaryFilePath;
-
-    protected $completeFile;
-
+    public      $temporaryDirectory = 'tmp';
+    protected   $temporaryFilePath  = '';
+    protected   $completeFile       = null;
+    public      $file               = null;
+    public      $_id;
+    public      $chunk;
+    public      $chunks;
+    public      $upload_column;
+    
     public function __construct(Request $request = null)
     {
         $request = $this->prepareRequest($request ?: request());

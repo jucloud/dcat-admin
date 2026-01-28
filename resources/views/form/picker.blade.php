@@ -21,5 +21,5 @@
 </div>
 
 <script require="@number-input" init="{!! $selector !!}">
-    $("#{{ $id }}").citypicker({!! $options !!});
+    $("#{{ $id }}").citypicker({!! $configs !!});
 </script>

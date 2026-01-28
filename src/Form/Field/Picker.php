@@ -10,10 +10,9 @@ class Picker extends Text
 
     protected $view = 'admin::form.picker';
 
-    protected $options = [
-        'province'  => '江苏省',
-        'city'      => '常州市',
-        'district'  => '溧阳市'
+    protected $configs = [
+        'level' => 'district',
+        'responsive' => false,
     ];
 
     /**
@@ -31,30 +30,92 @@ class Picker extends Text
         '@admin/dcat/plugins/picker/css/picker.css'
     ];
 
+    public function __construct($column, $arguments = []) {
+        $this->configs = collect($this->configs);
+
+        parent::__construct($column, $arguments);
+    }
 
     /**
      * {@inheritdoc}
      */
     public function render()
     {
-
         $pickerId = uniqid('picker-', false);
+
+        $this->configs();
 
         $this->defaultAttribute('id', $pickerId)
             ->defaultAttribute('type', 'text')
             ->defaultAttribute('name', $this->getElementName())
-            ->defaultAttribute('value', collect($this->options)->implode('/'))
-            ->defaultAttribute('class', ' '.$this->getElementClassString())
-            ->defaultAttribute('data-toggle', 'city-picker')
+            ->defaultAttribute('class', 'hidden '. $this->getElementClassString())
             ->defaultAttribute('placeholder', $this->placeholder())
+            ->defaultAttribute('data-toggle', 'city-picker')
             ->defaultAttribute('readonly', 'readonly');
 
         $this->prepend("<i class='feather icon-globe'></i>");
-
+        
         $this->addVariables([
             'id'            => $pickerId,
-            'options'       => json_encode(collect($this->options), JSON_UNESCAPED_UNICODE)
+            'configs'       => $this->configs->toJson()
         ]);
+
         return parent::render();
+    }
+
+    /**
+     * Set level value of number field.
+     * province: Only province, city: province + city, district: province + city + district
+     * @param  string  $value
+     * @return $this
+     */
+    public function level($value = 'district')
+    {
+        $this->configs->put('level', $value);
+
+        return $this;
+    }
+
+    /**
+     * Set responsive value of bool field.
+     * make the drop down and mask span responsive on width.
+     * @param  bool  $value Default: `false`
+     * @return $this
+     */
+    public function responsive($value = false)
+    {
+        $this->configs->put('responsive', $value);
+
+        return $this;
+    }
+
+    /**
+     * Set placeholder value of string field.
+     * Show placeholder (with an `<option>` element).
+     * @param  string  $value
+     * @return $this
+     */
+    public function placeholder($placeholder = null)
+    {
+        if ($placeholder === null) {
+            return $this->placeholder ? : '请选择省 / 市 / 区';
+        }
+
+        $this->placeholder = $placeholder;
+
+        return $this;
+    }
+
+    /**
+     * Set config.
+     *
+     * @param  array|\Closure  $configs
+     * @return $this
+     */
+    public function configs($configs = [])
+    {
+        $this->configs = $this->configs->merge($configs);
+
+        return $this;
     }
 }

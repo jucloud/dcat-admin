@@ -19,6 +19,8 @@ class SelectTable extends Field
 
     protected $style = 'primary';
 
+    protected $btnSize = '';
+    
     protected $visibleColumn;
 
     protected $key;
@@ -39,6 +41,19 @@ class SelectTable extends Field
     public function title($title)
     {
         $this->dialog->title($title);
+
+        return $this;
+    }
+
+    /**
+     * 设置弹窗标题.
+     *
+     * @param  string  $title
+     * @return $this
+     */
+    public function btnSm()
+    {
+        $this->btnSize = 'btn-sm';
 
         return $this;
     }
@@ -213,7 +228,7 @@ class SelectTable extends Field
     protected function renderButton()
     {
         return <<<HTML
-<div class="btn btn-{$this->style}">
+<div class="btn btn-{$this->style} {$this->btnSize}">
     &nbsp;<i class="feather icon-arrow-up"></i>&nbsp;
 </div>
 HTML;

@@ -5,6 +5,7 @@ namespace Dcat\Admin\Grid\Tools;
 use Dcat\Admin\Admin;
 use Dcat\Admin\Form\Field;
 use Dcat\Admin\Form\Field\MultipleSelect;
+use Dcat\Admin\Form\Field\SelectTable;
 use Dcat\Admin\Form\Field\Select;
 use Dcat\Admin\Form\Field\Text;
 use Dcat\Admin\Grid;
@@ -185,6 +186,20 @@ class QuickCreate implements Renderable
         $field = new MultipleSelect($column, $this->formatPlaceholder($placeholder));
 
         $this->addField($field);
+
+        return $field;
+    }
+
+    /**
+     * @param  string  $column
+     * @param  string  $placeholder
+     * @return MultipleSelect
+     */
+    public function selectTable($column, $placeholder = '')
+    {
+        $field = new SelectTable($column, $this->formatPlaceholder($placeholder));
+        
+        $this->addField($field->attribute('style', 'width:280px'));
 
         return $field;
     }

@@ -44,8 +44,7 @@ Dcat.init('{$this->getElementClassSelector()}', function (self) {
 });
 JS;
 
-        $this->prepend('<i class="fa fa-calendar fa-fw"></i>')
-            ->defaultAttribute('style', 'width: 200px;flex:none');
+        $this->prepend('<i class="fa fa-calendar fa-fw"></i>');
 
         return parent::render();
     }
