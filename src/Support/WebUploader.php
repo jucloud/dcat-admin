@@ -32,16 +32,16 @@ class WebUploader
     {
         $request = $this->prepareRequest($request ?: request());
 
-        $this->_id = $request->get('_id');
-        $this->chunk = $request->get('chunk');
-        $this->chunks = $request->get('chunks');
-        $this->upload_column = $request->get('upload_column');
+        $this->_id = $request->input('_id');
+        $this->chunk = $request->input('chunk');
+        $this->chunks = $request->input('chunks');
+        $this->upload_column = $request->input('upload_column');
         $this->file = $request->file(static::FILE_NAME);
     }
 
     protected function prepareRequest($request)
     {
-        $relation = $request->get('_relation');
+        $relation = $request->input('_relation');
         if (! $relation || ! is_string($relation)) {
             return $request;
         }

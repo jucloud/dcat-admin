@@ -174,7 +174,7 @@ class Form implements Renderable
         'multipleSelectTable' => Field\MultipleSelectTable::class,
         'autocomplete'        => Field\Autocomplete::class,
         'distpicker'          => Field\Distpicker::class,
-        'picker'              => Field\Picker::class,
+        'picker'              => Field\picker::class,
     ];
 
     /**
@@ -934,7 +934,7 @@ class Form implements Renderable
 
         $resourcesPath = $this->isCreating() ? $this->resource(0) : $this->resource(-1);
 
-        if ($this->request->get('after-save') == 1) {
+        if ($this->request->input('after-save') == 1) {
             // continue editing
             if ($this->builder->isEditing()) {
                 return false;
@@ -943,17 +943,17 @@ class Form implements Renderable
             return rtrim($resourcesPath, '/')."/{$key}/edit";
         }
 
-        if ($this->request->get('after-save') == 2) {
+        if ($this->request->input('after-save') == 2) {
             // continue creating
             return rtrim($resourcesPath, '/').'/create';
         }
 
-        if ($this->request->get('after-save') == 3) {
+        if ($this->request->input('after-save') == 3) {
             // view resource
             return rtrim($resourcesPath, '/')."/{$key}";
         }
 
-        return $this->request->get(Builder::PREVIOUS_URL_KEY) ?: $this->getCurrentUrl($resourcesPath);
+        return $this->request->input(Builder::PREVIOUS_URL_KEY) ?: $this->getCurrentUrl($resourcesPath);
     }
 
     /**

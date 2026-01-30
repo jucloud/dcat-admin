@@ -32,7 +32,7 @@ class Select extends Field
      * @param  array|\Closure|string  $options
      * @return $this|mixed
      */
-    public function options($options = [], array $parameters = [])
+    public function options($options = [])
     {
         if ($options instanceof \Closure) {
             $this->options = $options;
