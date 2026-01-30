@@ -31,7 +31,7 @@ trait HasBuilderEvents
         $context = Admin::context();
 
         $key = static::formatEventKey($key);
-
+        
         $listeners = $context->get($key) ?: [];
 
         foreach ($listeners as $k => $listener) {

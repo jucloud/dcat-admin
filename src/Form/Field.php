@@ -1341,7 +1341,7 @@ class Field implements Renderable
     public function __toString()
     {
         $view = $this->render();
-
+        
         return $view instanceof Renderable ? $view->render() : (string) $view;
     }
 }

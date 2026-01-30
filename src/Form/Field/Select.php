@@ -51,7 +51,7 @@ class Select extends Field
         }
 
         $this->options = Helper::array($options);
-
+        
         return $this;
     }
 
@@ -133,11 +133,11 @@ class Select extends Field
     protected function loadRemoteOptions(string $url, array $parameters = [], array $options = [])
     {
         $ajaxOptions = [
-            'url' => admin_url($url.'?'.http_build_query($parameters)),
+            'url' => admin_url($url.'?' . http_build_query($parameters)),
         ];
-
+        
         $ajaxOptions = array_merge($ajaxOptions, $options);
-
+        
         return $this->addVariables(['remoteOptions' => $ajaxOptions]);
     }
 
@@ -233,7 +233,7 @@ class Select extends Field
         $this->initSize();
 
         $this->attribute('data-value', implode(',', Helper::array($this->value())));
-
+        
         return parent::render();
     }
 

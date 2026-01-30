@@ -32,7 +32,7 @@ class TinymceController
      */
     protected function disk()
     {
-        $disk = request()->get('disk') ?: config('admin.upload.disk');
+        $disk = request()->input('disk') ?: config('admin.upload.disk');
 
         return Storage::disk($disk);
     }

@@ -174,7 +174,7 @@ class Form implements Renderable
         'multipleSelectTable' => Field\MultipleSelectTable::class,
         'autocomplete'        => Field\Autocomplete::class,
         'distpicker'          => Field\Distpicker::class,
-        'picker'              => Field\picker::class,
+        'picker'              => Field\Picker::class,
     ];
 
     /**
@@ -1363,7 +1363,6 @@ class Form implements Renderable
     public function addVariables(array $vars)
     {
         $this->builder->addVariables($vars);
-
         return $this;
     }
 

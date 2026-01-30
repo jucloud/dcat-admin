@@ -60,7 +60,7 @@ class File extends Field implements UploadFieldInterface
         if (! Arr::has($input, $this->column)) {
             return false;
         }
-
+        
         $value = Arr::get($input, $this->column);
         $value = array_filter(is_array($value) ? $value : explode(',', $value));
 
