@@ -31,7 +31,6 @@ class KeyValue extends Field
         
         if ($options instanceof \Closure) {
             $this->options = $options;
-
             return $this;
         }
 
@@ -100,7 +99,7 @@ class KeyValue extends Field
     protected function loadRemoteOptions(string $url, array $parameters = [], array $options = [])
     {
         $ajaxOptions = [
-            'url' => admin_url($url.'?' . http_build_query($parameters)),
+            'url' => admin_url($url . '?' . http_build_query($parameters)),
         ];
         
         $ajaxOptions = array_merge($ajaxOptions, $options);
@@ -268,7 +267,7 @@ class KeyValue extends Field
     public function render()
     {
         $value = $this->value();
-
+        
         $this->addDefaultConfig([
             'allowClear'  => false,
             'placeholder' => [

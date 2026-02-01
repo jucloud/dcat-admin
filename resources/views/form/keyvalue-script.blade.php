@@ -8,15 +8,13 @@
 
     @if(isset($remoteOptions))
     $.ajax({!! admin_javascript_json($remoteOptions) !!}).done(function(data) {
+        
         configs.data = data;
         
         $this.each(function (_, select) {
             select = $(select);
-
             select.select2(configs);
-
-            var value = select.data('value') + '';
-
+            let value = select.data('value') + '';
             if (value) {
                 select.val(value.split(',')).trigger("change")
             }

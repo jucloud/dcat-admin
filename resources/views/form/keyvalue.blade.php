@@ -34,7 +34,7 @@
                         @if($keyType == 'select')
                         <div class="form-group">
                             <div class="help-block with-errors"></div>
-                            <select class="form-control {{$class}}_kv" style="width: 100%;" name="{{ $name }}[keys][{{ $loop->index }}]" {!! $attributes !!} >
+                            <select class="form-control {{$class}}_kv" style="width: 100%;" name="{{ $name }}[keys][{{ $loop->index }}]">
                                 <option value=""></option>
                                 @foreach($options as $select => $option)
                                     <option value="{{$select}}" {{ Dcat\Admin\Support\Helper::equal($select, $k) ?'selected':'' }}>{{$option}}</option>
