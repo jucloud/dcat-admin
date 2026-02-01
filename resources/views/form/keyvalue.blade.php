@@ -1,12 +1,19 @@
 <style>
-    td .form-group {margin-bottom: 0 !important;}
+    td .form-group {margin-bottom: 7px !important;}
+    .kv-item {padding-left: 1rem !important; width: 45%;}
+    .kv-item .col-sm-12 {padding-left:0;}
+    .kv-remove, .kv-add {margin-top:8px;}
 </style>
+@if($label!=false)
+<div class="row">
+    <div class="{{$viewClass['label']}}"><h4 class="pull-right">{!! $label !!}</h4></div>
+    <div class="{{$viewClass['field']}}"></div>
+</div>
+<hr style="margin-top: 0px;">
+@endif
 
 <div class="{{$viewClass['form-group']}} {{ $class }}">
-
-    <label class="{{$viewClass['label']}} control-label">{{$label}}</label>
-
-    <div class="{{$viewClass['field']}}">
+    <div class="col-md-12">
         <span name="{{$name}}"></span>
         <input name="{{ $name }}[{{ \Dcat\Admin\Form\Field\KeyValue::DEFAULT_FLAG_NAME }}]" type="hidden" />
 
@@ -15,26 +22,35 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>{!! $keyLabel !!}</th>
-                <th>{!! $valueLabel !!}</th>
-                <th style="width: 85px;"></th>
+                <th class="kv-item">{!! $keyLabel !!}</th>
+                <th class="kv-item">{!! $valueLabel !!}</th>
+                <th style="width: 50px;"></th>
             </tr>
             </thead>
             <tbody class="kv-table">
-
-            @foreach(($value ?: []) as $k => $v)
+                @foreach(($value ?: []) as $k => $v)
                 <tr>
-                    <td>
+                    <td class="kv-item">
+                        @if($keyType == 'select')
+                        <div class="form-group">
+                            <div class="help-block with-errors"></div>
+                            <select class="form-control {{$class}}_kv" style="width: 100%;" name="{{ $name }}[keys][{{ $loop->index }}]" {!! $attributes !!} >
+                                <option value=""></option>
+                                @foreach($options as $select => $option)
+                                    <option value="{{$select}}" {{ Dcat\Admin\Support\Helper::equal($select, $k) ?'selected':'' }}>{{$option}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @else
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <div class="help-block with-errors"></div>
-
-                                <input name="{{ $name }}[keys][{{ $loop->index }}]" value="{{ $k }}" class="form-control" required/>
-
+                                <input name="{{ $name }}[keys][{{ $loop->index }}]" value="{{ $k }}" class="form-control" required/>11
                             </div>
                         </div>
+                        @endif
                     </td>
-                    <td>
+                    <td class="kv-item">
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <div class="help-block with-errors"></div>
@@ -43,15 +59,15 @@
                         </div>
                     </td>
 
-                    <td class="form-group">
+                    <td class="form-group kv-action">
                         <div>
                             <div class="kv-remove btn btn-white btn-sm pull-right">
-                                <i class="feather icon-trash">&nbsp;</i>
+                                <i class="feather icon-trash"></i>
                             </div>
                         </div>
                     </td>
                 </tr>
-            @endforeach
+                @endforeach
             </tbody>
             <tfoot>
             <tr>
@@ -59,7 +75,7 @@
                 <td></td>
                 <td>
                     <div class="kv-add btn btn-primary btn-outline btn-sm pull-right">
-                        <i class="feather icon-save"></i>&nbsp;{{ __('admin.new') }}
+                        <i class="feather icon-plus"></i>
                     </div>
                 </td>
             </tr>
@@ -69,27 +85,38 @@
 
     <template>
         <tr>
-            <td>
-                <div class="form-group  ">
+            <td class="kv-item">
+                @if($keyType == 'select')
+                <div class="form-group">
+                    <div class="help-block with-errors"></div>
+                    <select class="form-control {{$class}}_kv" style="width: 100%;" name="{{ $name }}[keys][{key}]" >
+                        <option value=""></option>
+                        @foreach($options as $select => $option)
+                            <option value="{{$select}}">{{$option}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @else
+                <div class="form-group">
                     <div class="col-sm-12">
                         <div class="help-block with-errors"></div>
                         <input name="{{ $name }}[keys][{key}]" class="form-control" required/>
                     </div>
                 </div>
+                @endif
             </td>
-            <td>
-                <div class="form-group  ">
+            <td class="kv-item">
+                <div class="form-group">
                     <div class="col-sm-12">
                         <div class="help-block with-errors"></div>
-                        <input name="{{ $name }}[values][{key}]" class="form-control" />
+                        <input name="{{ $name }}[values][{key}]" class="form-control" {!! $attributes !!}/>
                     </div>
                 </div>
             </td>
-
             <td class="form-group">
                 <div>
                     <div class="kv-remove btn btn-white btn-sm pull-right">
-                        <i class="feather icon-trash">&nbsp;</i>
+                        <i class="feather icon-trash"></i>
                     </div>
                 </div>
             </td>
@@ -97,16 +124,4 @@
     </template>
 </div>
 
-<script init="{!! $selector !!}">
-    var index = {{ $count }};
-    $this.find('.kv-add').on('click', function () {
-        var tpl = $this.find('template').html().replace('{key}', index).replace('{key}', index);
-        $this.find('tbody.kv-table').append(tpl);
-
-        index++;
-    });
-
-    $this.find('tbody.kv-table').on('click', '.kv-remove', function () {
-        $(this).closest('tr').remove();
-    });
-</script>
+@include('admin::form.keyvalue-script')
