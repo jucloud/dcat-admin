@@ -6,12 +6,19 @@
     $(document).off('change', selector);
     $(document).on('change', selector, function () {
 
-        let params = $.extend({!! json_encode($load['parameters']) !!}, {
+        let params = $.extend({
             key: $(this).val()
-        });
+        }, {!! json_encode($load['parameters']) !!});
         
+        let maps = {!! json_encode($load['maps']) !!};
+        let ele = $(this);
+
         $.ajax("{!! admin_javascript_json($load['url']) !!}" + '?' + $.param(params)).done(function(result) {
-            $("[name='" + $(this).attr('name').replace('keys', 'values') + "']").val(result.message);
+            if(Object.keys(maps).length > 0) {
+                $("[name='" + ele.attr('name').replace('keys', 'values') + "']").val(result.data);
+            } else {
+                $("[name='" + ele.attr('name').replace('keys', 'values') + "']").val(result.data);
+            }
         });
     });
     $(selector).trigger('change');

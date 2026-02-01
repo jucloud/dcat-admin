@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <div class="help-block with-errors"></div>
-                                <input name="{{ $name }}[values][{{ $loop->index }}]" value="{{ $v }}" class="form-control" {!! $attributes !!} />
+                                <input name="{{ $name }}[values][{{ $loop->index }}]" value="{{ $v }}" class="form-control" {!! $attributes !!}/>
                             </div>
                         </div>
                     </td>

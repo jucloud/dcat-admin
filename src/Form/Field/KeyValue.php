@@ -115,11 +115,10 @@ class KeyValue extends Field
      * @param $params
      * @return $this
      */
-    public function load(string $url, array $parameters = [])
+    public function load(string $url, array $parameters = [], array $maps = [])
     {
         $url = admin_url($url);
-
-        return $this->addVariables(['load' => compact('url', 'parameters')]);
+        return $this->addVariables(['load' => compact('url', 'parameters', 'maps')]);
     }
     
     /**
@@ -285,9 +284,9 @@ class KeyValue extends Field
             'keyType'    => $this->getKeyType(),
             'keyLabel'   => $this->getKeyLabel(),
             'valueLabel' => $this->getValueLabel(),
-
-            'options'       => $this->options,
-            'configs'       => $this->configs,
+            
+            'options'    => $this->options,
+            'configs'    => $this->configs,
         ]);
 
         $this->attribute('data-value', implode(',', Helper::array($this->value())));
