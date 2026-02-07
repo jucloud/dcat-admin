@@ -1,4 +1,4 @@
-<div class="input-group input-group-sm quick-form-field">
+<div class="input-group input-group-sm quick-form-field" style="min-width:100px">
     <select class="form-control {{$class}}" style="width: 100%;" name="{{$name}}" {!! $attributes !!} >
 
         <option value=""></option>
@@ -9,4 +9,3 @@
 </div>
 
 @include('admin::form.select-script')
-
