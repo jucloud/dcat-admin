@@ -47,6 +47,11 @@ abstract class AbstractExporter implements ExporterInterface
     /**
      * @var string
      */
+    protected $modelQueries;
+    
+    /**
+     * @var string
+     */
     protected $extension = 'xlsx';
 
     /**

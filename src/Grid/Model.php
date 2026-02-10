@@ -117,6 +117,11 @@ class Model
     protected $relation;
 
     /**
+     * @var Illuminate\Database\Eloquent\Model
+     */
+    protected $model;
+
+    /**
      * @var array
      */
     protected $eagerLoads = [];
