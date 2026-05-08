@@ -17,9 +17,10 @@
                         {!! $grid->renderQuickSearch() !!}
                     </div>
                 @else
-                    {!! $grid->renderTools() !!}  {!! $grid->renderQuickSearch() !!}
-
+                    {!! $grid->renderQuickSearch() !!}
+                    
                     <div class="pull-right" data-responsive-table-toolbar="{{$tableId}}">
+                        {!! $grid->renderTools() !!}
                         {!! $grid->renderColumnSelector() !!}
                         {!! $grid->renderCreateButton() !!}
                         {!! $grid->renderExportButton() !!}
