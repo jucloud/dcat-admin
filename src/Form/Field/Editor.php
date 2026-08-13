@@ -14,6 +14,7 @@ use Dcat\Admin\Support\Helper;
 class Editor extends Field
 {
     protected $options = [
+        'menubar' => true,
         'plugins' => [
             'advlist',
             'autolink',
