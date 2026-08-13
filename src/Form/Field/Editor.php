@@ -31,7 +31,7 @@ class Editor extends Field
             'codesample',
         ],
         'toolbar' => [
-            'undo redo | preview fullscreen | styleselect | fontsizeselect bold italic underline strikethrough forecolor backcolor | link image media blockquote removeformat codesample',
+            'undo redo | preview fullscreen | fontsize bold italic underline strikethrough forecolor backcolor | link image media blockquote removeformat codesample',
             'alignleft aligncenter alignright  alignjustify| indent outdent bullist numlist table subscript superscript | code',
         ],
         'min_height' => 400,
@@ -41,7 +41,7 @@ class Editor extends Field
 
     protected $disk;
 
-    protected $imageUploadDirectory = 'tinymce/images';
+    protected $imageUploadDirectory = 'images';
 
     /**
      * 设置文件上传存储配置.
@@ -136,7 +136,7 @@ class Editor extends Field
             [
                 '_token' => csrf_token(),
                 'disk'   => $this->disk,
-                'dir'    => $this->imageUploadDirectory,
+                'dir'    => $this->imageUploadDirectory . date("/Y/m", time()),
             ]
         );
     }
